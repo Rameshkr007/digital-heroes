@@ -11,7 +11,7 @@ import achievementRoutes from './routes/achievement.routes';
 import activityRoutes from './routes/activity.routes';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
-import { runSeed } from '../prisma/seed';
+import { runSeed } from './utils/seed';
 import { prisma } from './utils/prisma';
 
 const app = express();
