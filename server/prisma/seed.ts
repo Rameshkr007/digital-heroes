@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
-
-async function main() {
+export async function runSeed(prismaClient?: PrismaClient) {
+  const prisma = prismaClient || new PrismaClient();
   console.log('🌱 Seeding Digital Heroes database with Indian Hero profiles...');
 
   // Clear existing data
@@ -411,12 +410,20 @@ async function main() {
   }
 
   console.log('\n🎉 Indian Heroes Seeding complete!');
-  console.log('\n📋 Accounts:');
-  console.log('  Email: demo@digitalhero.dev | Password: Demo@1234');
-  console.log('  Email: aarav@digitalhero.dev | Password: Hero@1234');
-  console.log('  (All hero accounts use password: Hero@1234)');
 }
 
-main()
-  .catch((e) => { console.error(e); process.exit(1); })
-  .finally(async () => { await prisma.$disconnect(); });
+async function main() {
+  const prismaClient = new PrismaClient();
+  try {
+    await runSeed(prismaClient);
+  } catch (e) {
+    console.error(e);
+    process.exit(1);
+  } finally {
+    await prismaClient.$disconnect();
+  }
+}
+
+if (require.main === module) {
+  main();
+}

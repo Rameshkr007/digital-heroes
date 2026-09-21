@@ -11,6 +11,8 @@ import achievementRoutes from './routes/achievement.routes';
 import activityRoutes from './routes/activity.routes';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
+import { runSeed } from '../prisma/seed';
+import { prisma } from './utils/prisma';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -45,6 +47,17 @@ if (process.env.NODE_ENV !== 'test') {
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Digital Heroes API is running', timestamp: new Date().toISOString() });
+});
+
+// Seed endpoint to trigger database reset & re-seed with Indian Heroes
+app.get('/api/seed', async (req, res) => {
+  try {
+    await runSeed(prisma);
+    res.json({ success: true, message: 'Database successfully re-seeded with Indian Heroes!' });
+  } catch (error) {
+    logger.error('Seed error:', error);
+    res.status(500).json({ success: false, message: 'Seeding failed', error: String(error) });
+  }
 });
 
 // Routes
