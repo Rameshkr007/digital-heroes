@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 4000;
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: true, // Allow all origins for API access (Vercel, custom domains, local)
     credentials: true,
   })
 );
@@ -27,7 +27,7 @@ app.use(
 // Rate limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 200,
+  max: 300,
   standardHeaders: true,
   legacyHeaders: false,
 });
