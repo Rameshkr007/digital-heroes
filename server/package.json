@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js",
+    "start": "npx prisma db push && node dist/index.js",
     "seed": "tsx prisma/seed.ts",
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
     "db:studio": "prisma studio",
-    "render-build": "npm install --include=dev && npx prisma generate && npx prisma db push && npx tsx prisma/seed.ts && npm run build"
+    "render-build": "npm install --include=dev && npx prisma generate && npm run build"
   },
   "engines": {
     "node": ">=18.0.0"
