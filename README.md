@@ -38,13 +38,7 @@
 - Node.js 18+
 - npm 9+
 
-### Option A — Automated Setup (Windows)
-```powershell
-cd digital-heroes
-.\setup.ps1
-```
-
-### Option B — Manual Setup
+ Manual Setup
 
 **1. Backend**
 ```bash
@@ -67,19 +61,7 @@ npm run dev
 
 ---
 
-## 🔑 Demo Accounts
 
-| Email | Password | Hero Name | Role |
-|---|---|---|---|
-| `demo@digitalhero.dev` | `Demo@1234` | Demo Hero | Level 3 Demo Account |
-| `aarav@digitalhero.dev` | `Hero@1234` | Aarav Sharma | Full-Stack Innovator (Level 12) |
-| `ananya@digitalhero.dev` | `Hero@1234` | Ananya Iyer | Design Systems Architect (Level 14) |
-| `rohan@digitalhero.dev` | `Hero@1234` | Rohan Verma | AI/ML Pioneer (Level 16) |
-| `zoya@digitalhero.dev` | `Hero@1234` | Zoya Siddiqui | Web3 Architect (Level 11) |
-| `aditya@digitalhero.dev` | `Hero@1234` | Aditya Patel | DevOps Craftsman (Level 10) |
-| `priya@digitalhero.dev` | `Hero@1234` | Priya Sharma | Mobile Experience Engineer (Level 9) |
-| `devansh@digitalhero.dev` | `Hero@1234` | Devansh Gupta | Cybersecurity Specialist (Level 13) |
-| `kavya@digitalhero.dev` | `Hero@1234` | Kavya Reddy | Data Science Leader (Level 11) |
 
 ---
 
@@ -133,25 +115,7 @@ digital-heroes/
 
 ---
 
-## 🎨 Design Tokens
 
-The design uses CSS custom properties for theming:
-
-```css
-/* Light mode */
---bg-primary, --bg-secondary, --bg-card
---text-primary, --text-secondary, --text-muted
---accent-primary (indigo), --accent-secondary (violet), --accent-cyan
-
-/* Dark mode — toggled via .dark class on <html> */
-```
-
-Key Tailwind extensions:
-- `gradient-text` — Indigo → Violet → Cyan gradient text
-- `glass-card` — Glassmorphism card
-- `aurora-bg` — Subtle aurora gradient background
-- `focus-ring` — Accessible focus indicator
-- `shimmer` — Loading skeleton animation
 
 ---
 
