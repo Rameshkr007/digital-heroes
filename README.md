@@ -69,13 +69,17 @@ npm run dev
 
 ## 🔑 Demo Accounts
 
-| Email | Password | Role |
-|---|---|---|
-| `demo@digitalhero.dev` | `Demo@1234` | Demo Hero (Level 3) |
-| `alex@digitalhero.dev` | `Hero@1234` | Full-Stack Innovator (Level 12) |
-| `sarah@digitalhero.dev` | `Hero@1234` | Design Systems Architect (Level 14) |
-| `marcus@digitalhero.dev` | `Hero@1234` | AI/ML Pioneer (Level 16) |
-| *(All 8 hero accounts)* | `Hero@1234` | — |
+| Email | Password | Hero Name | Role |
+|---|---|---|---|
+| `demo@digitalhero.dev` | `Demo@1234` | Demo Hero | Level 3 Demo Account |
+| `aarav@digitalhero.dev` | `Hero@1234` | Aarav Sharma | Full-Stack Innovator (Level 12) |
+| `ananya@digitalhero.dev` | `Hero@1234` | Ananya Iyer | Design Systems Architect (Level 14) |
+| `rohan@digitalhero.dev` | `Hero@1234` | Rohan Verma | AI/ML Pioneer (Level 16) |
+| `zoya@digitalhero.dev` | `Hero@1234` | Zoya Siddiqui | Web3 Architect (Level 11) |
+| `aditya@digitalhero.dev` | `Hero@1234` | Aditya Patel | DevOps Craftsman (Level 10) |
+| `priya@digitalhero.dev` | `Hero@1234` | Priya Sharma | Mobile Experience Engineer (Level 9) |
+| `devansh@digitalhero.dev` | `Hero@1234` | Devansh Gupta | Cybersecurity Specialist (Level 13) |
+| `kavya@digitalhero.dev` | `Hero@1234` | Kavya Reddy | Data Science Leader (Level 11) |
 
 ---
 
