@@ -60,19 +60,37 @@ export function initSocket(httpServer: HTTPServer): SocketIOServer {
       logger.info(`🎮 New Code Duel created: ${duelId} by ${data.heroName}`);
     });
 
-    // Code Duel: Join Existing Arena
+    // Code Duel: Join Existing Arena or Auto-Create Room
     socket.on('duel:join', (data: { duelId: string; heroName: string; avatarUrl?: string }) => {
-      const duel = activeDuels.get(data.duelId);
-      if (duel && duel.status === 'waiting') {
+      const cleanDuelId = data.duelId.toLowerCase().trim().replace(/\s+/g, '_');
+      let duel = activeDuels.get(cleanDuelId);
+
+      if (!duel) {
+        // Auto-create room for custom code if it doesn't exist yet!
+        duel = {
+          id: cleanDuelId,
+          player1: { id: 'bot_ai', name: 'Aarav Sharma (AI Hero)', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=aarav', progress: 10 },
+          problem: {
+            title: 'Array Two-Sum Challenge',
+            description: 'Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.',
+            starterCode: `function twoSum(nums, target) {\n  // Write your solution here\n  for (let i = 0; i < nums.length; i++) {\n    for (let j = i + 1; j < nums.length; j++) {\n      if (nums[i] + nums[j] === target) return [i, j];\n    }\n  }\n  return [];\n}`,
+            expectedOutput: '[0, 1]',
+          },
+          status: 'waiting',
+        };
+        activeDuels.set(cleanDuelId, duel);
+      }
+
+      if (duel.status === 'waiting' || duel.status === 'active') {
         duel.player2 = { id: socket.id, name: data.heroName, avatar: data.avatarUrl, progress: 0 };
         duel.status = 'active';
-        activeDuels.set(data.duelId, duel);
+        activeDuels.set(cleanDuelId, duel);
 
-        socket.join(data.duelId);
-        io?.to(data.duelId).emit('duel:started', duel);
-        logger.info(`🎮 Duel started: ${data.duelId} (${duel.player1.name} vs ${duel.player2.name})`);
+        socket.join(cleanDuelId);
+        io?.to(cleanDuelId).emit('duel:started', duel);
+        logger.info(`🎮 Duel started: ${cleanDuelId} (${duel.player1.name} vs ${duel.player2.name})`);
       } else {
-        socket.emit('duel:error', { message: 'Duel not found or already in progress' });
+        socket.emit('duel:error', { message: 'Duel already completed or busy' });
       }
     });
 
