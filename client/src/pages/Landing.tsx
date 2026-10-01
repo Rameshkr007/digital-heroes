@@ -11,6 +11,7 @@ import { HeroCardSkeleton } from '../components/ui/Skeleton';
 import { heroesService, HeroCard } from '../services/heroes';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { formatNumber, getLevelTitle } from '../utils/helpers';
+import { HeroCore3D } from '../components/shared/HeroCore3D';
 
 // ==================== HeroCore Canvas Animation ====================
 function HeroCore() {
@@ -288,9 +289,9 @@ export default function Landing() {
             {/* Right — HeroCore visual */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative w-full aspect-square max-w-lg mx-auto"
+              className="relative w-full max-w-lg mx-auto"
             >
-              <HeroCore />
+              <HeroCore3D />
             </motion.div>
           </div>
 
