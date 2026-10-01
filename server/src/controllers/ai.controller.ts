@@ -10,7 +10,7 @@ export async function askAIMentor(req: AuthRequest, res: Response, next: NextFun
       return;
     }
 
-    const advice = await generateAIMentorAdvice(req.user!.userId, message, history || []);
+    const advice = await generateAIMentorAdvice(req.user?.userId, message, history || []);
     res.json({
       success: true,
       data: {

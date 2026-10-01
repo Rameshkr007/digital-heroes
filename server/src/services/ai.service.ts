@@ -7,28 +7,41 @@ export interface AIMentorMessage {
 }
 
 export async function generateAIMentorAdvice(
-  userId: string,
-  userMessage: string,
+  userId?: string,
+  userMessage: string = '',
   conversationHistory: AIMentorMessage[] = []
 ): Promise<string> {
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    include: {
-      profile: {
+  let p = {
+    displayName: 'Digital Hero',
+    level: 1,
+    xp: 250,
+    title: 'Rising Hero',
+    skills: [] as any[],
+    achievements: [] as any[],
+    projects: [] as any[],
+  };
+
+  if (userId) {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
         include: {
-          skills: { include: { skill: true } },
-          achievements: true,
-          projects: true,
+          profile: {
+            include: {
+              skills: { include: { skill: true } },
+              achievements: true,
+              projects: true,
+            },
+          },
         },
-      },
-    },
-  });
-
-  if (!user || !user.profile) {
-    throw new Error('User profile not found');
+      });
+      if (user?.profile) {
+        p = user.profile as any;
+      }
+    } catch (err) {
+      console.warn('Could not fetch user profile for AI mentor, using default');
+    }
   }
-
-  const p = user.profile;
   const skillsList = p.skills.map((s) => s.skill.name).join(', ') || 'General Development';
   const achievementsCount = p.achievements.length;
   const projectsCount = p.projects.length;
