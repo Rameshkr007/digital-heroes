@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Zap, TrendingUp, Star, Activity, ArrowRight, LayoutDashboard } from 'lucide-react';
+import { Trophy, Zap, TrendingUp, Star, Activity, ArrowRight, Github, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { RadarChart, PolarGrid, PolarAngleAxis, Radar, ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { useAuthStore } from '../store/authStore';
@@ -8,14 +8,22 @@ import { Avatar } from '../components/ui/Avatar';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
+import { Input } from '../components/ui/Input';
+import { Modal } from '../components/ui/Modal';
 import { ProgressRing } from '../components/ui/ProgressRing';
 import { getLevelTitle, getXPProgress, formatNumber } from '../utils/helpers';
 import { authService } from '../services/auth';
+import { githubService } from '../services/github';
+import { useToast } from '../store/toastStore';
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const toast = useToast();
   const { user, updateUser } = useAuthStore();
   const [loading, setLoading] = useState(true);
+  const [githubModal, setGithubModal] = useState(false);
+  const [ghUsername, setGhUsername] = useState('');
+  const [syncing, setSyncing] = useState(false);
 
   useEffect(() => {
     authService.getMe().then((data) => { updateUser(data); }).catch(() => {}).finally(() => setLoading(false));
@@ -26,6 +34,30 @@ export default function Dashboard() {
 
   const xpProgress = getXPProgress(profile.xp);
   const levelTitle = getLevelTitle(profile.level);
+
+  const handleGitHubSync = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!ghUsername.trim()) return;
+
+    setSyncing(true);
+    try {
+      const res = await githubService.sync(ghUsername.trim());
+      toast.success(
+        'GitHub Synced Successfully! 🚀',
+        `Earned +${res.xpEarned} XP! Imported ${res.stats.publicRepos} repos & ${res.stats.totalStars} stars.`
+      );
+
+      // Refresh user profile state
+      const updatedUser = await authService.getMe();
+      updateUser(updatedUser);
+      setGithubModal(false);
+      setGhUsername('');
+    } catch (err: any) {
+      toast.error('GitHub Sync Failed', err.response?.data?.message || err.message);
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const radarData = [
     { subject: 'Technical', value: 80 },
@@ -51,11 +83,23 @@ export default function Dashboard() {
             <div className="flex items-center gap-4">
               <Avatar src={profile.avatarUrl} alt={profile.displayName} size="xl" level={profile.level} />
               <div>
-                <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Welcome back, {profile.displayName.split(' ')[0]}!</h1>
-                <p className="text-slate-500 dark:text-slate-400">{levelTitle} · {profile.xp.toLocaleString()} XP</p>
+                <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">
+                  Welcome back, {profile.displayName.split(' ')[0]}!
+                </h1>
+                <p className="text-slate-500 dark:text-slate-400">
+                  {levelTitle} · {profile.xp.toLocaleString()} XP
+                  {profile.github && <span className="ml-2 inline-flex items-center text-xs bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full font-medium">@{profile.github}</span>}
+                </p>
               </div>
             </div>
-            <Button onClick={() => navigate(`/heroes/${user?.username}`)} variant="outline" rightIcon={<ArrowRight size={14} />}>View My Profile</Button>
+            <div className="flex items-center gap-3">
+              <Button onClick={() => setGithubModal(true)} variant="secondary" leftIcon={<Github size={16} />}>
+                Sync GitHub
+              </Button>
+              <Button onClick={() => navigate(`/heroes/${user?.username}`)} variant="outline" rightIcon={<ArrowRight size={14} />}>
+                View My Profile
+              </Button>
+            </div>
           </div>
         </motion.div>
 
@@ -135,13 +179,13 @@ export default function Dashboard() {
             <h3 className="font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2"><Activity size={18} className="text-indigo-500" /> Quick Actions</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[{
+                icon: '⚡', label: 'Sync GitHub Activity', desc: 'Auto-import repos & earn XP bonus', action: () => setGithubModal(true)
+              }, {
                 icon: '🏆', label: 'Browse Achievements', desc: 'Find new achievements to earn', action: () => navigate('/achievements')
               }, {
                 icon: '👥', label: 'Explore Heroes', desc: 'Connect with the community', action: () => navigate('/explore')
               }, {
-                icon: '⚡', label: 'View My Profile', desc: 'See how others see you', action: () => navigate(`/heroes/${user?.username}`)
-              }, {
-                icon: '🚀', label: 'Discover Projects', desc: 'Get inspiration from heroes', action: () => navigate('/heroes')
+                icon: '🚀', label: 'View My Profile', desc: 'See how others see you', action: () => navigate(`/heroes/${user?.username}`)
               }].map((item) => (
                 <button key={item.label} onClick={item.action}
                   className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 dark:border-navy-700 hover:border-indigo-300 dark:hover:border-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/10 transition-all text-left group">
@@ -156,6 +200,31 @@ export default function Dashboard() {
           </Card>
         </div>
       </div>
+
+      {/* GitHub Sync Modal */}
+      <Modal isOpen={githubModal} onClose={() => setGithubModal(false)} title="Sync GitHub Activity 🚀">
+        <form onSubmit={handleGitHubSync} className="space-y-4">
+          <p className="text-sm text-slate-600 dark:text-slate-300">
+            Enter your GitHub username to automatically fetch public repositories, stargazers, and followers. We will calculate your bonus XP and import top projects into your profile!
+          </p>
+          <Input
+            label="GitHub Username"
+            placeholder="e.g. Rameshkr007"
+            value={ghUsername}
+            onChange={(e) => setGhUsername(e.target.value)}
+            leftElement={<Github size={16} />}
+            required
+          />
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-100 dark:border-navy-800">
+            <Button type="button" variant="ghost" onClick={() => setGithubModal(false)}>
+              Cancel
+            </Button>
+            <Button type="submit" isLoading={syncing} leftIcon={<RefreshCw size={16} className={syncing ? 'animate-spin' : ''} />}>
+              Start GitHub Sync
+            </Button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 }
