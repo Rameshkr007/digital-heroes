@@ -4,6 +4,7 @@ import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ToastContainer } from './components/ui/Toast';
 import { CommandPalette } from './components/shared/CommandPalette';
+import { AIMentorDrawer } from './components/shared/AIMentorDrawer';
 import { useAuthStore } from './store/authStore';
 
 const Landing = React.lazy(() => import('./pages/Landing'));
@@ -68,6 +69,7 @@ export default function App() {
       <Footer />
       <ToastContainer />
       <CommandPalette isOpen={cmdOpen} onClose={() => setCmdOpen(false)} />
+      <AIMentorDrawer />
     </div>
   );
 }

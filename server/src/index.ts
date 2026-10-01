@@ -10,6 +10,7 @@ import heroRoutes from './routes/hero.routes';
 import achievementRoutes from './routes/achievement.routes';
 import activityRoutes from './routes/activity.routes';
 import githubRoutes from './routes/github.routes';
+import aiRoutes from './routes/ai.routes';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
 import { runSeed } from './utils/seed';
@@ -67,6 +68,7 @@ app.use('/api/heroes', heroRoutes);
 app.use('/api/achievements', achievementRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/github', githubRoutes);
+app.use('/api/ai', aiRoutes);
 
 // 404 handler
 app.use((req, res) => {
