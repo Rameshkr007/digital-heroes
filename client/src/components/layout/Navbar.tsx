@@ -12,6 +12,7 @@ const navLinks = [
   { href: '/explore', label: 'Explore' },
   { href: '/heroes', label: 'Heroes' },
   { href: '/achievements', label: 'Achievements' },
+  { href: '/codeduel', label: 'Code Duel ⚔️' },
   { href: '/about', label: 'About' },
 ];
 
