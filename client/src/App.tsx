@@ -5,6 +5,7 @@ import { Footer } from './components/layout/Footer';
 import { ToastContainer } from './components/ui/Toast';
 import { CommandPalette } from './components/shared/CommandPalette';
 import { AIMentorDrawer } from './components/shared/AIMentorDrawer';
+import { LiveActivityBanner } from './components/shared/LiveActivityBanner';
 import { useAuthStore } from './store/authStore';
 
 const Landing = React.lazy(() => import('./pages/Landing'));
@@ -48,6 +49,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-navy-950 transition-colors duration-300">
+      <LiveActivityBanner />
       <Navbar />
       <main>
         <React.Suspense fallback={<PageLoader />}>

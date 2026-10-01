@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import http from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -15,9 +16,14 @@ import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
 import { runSeed } from './utils/seed';
 import { prisma } from './utils/prisma';
+import { initSocket } from './utils/socket';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const server = http.createServer(app);
+
+// Initialize Socket.io WebSockets
+initSocket(server);
 
 // Security middleware
 app.use(helmet());
@@ -78,8 +84,8 @@ app.use((req, res) => {
 // Error handler
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  logger.info(`Digital Heroes API running on http://localhost:${PORT}`);
+server.listen(PORT, () => {
+  logger.info(`Digital Heroes API & WebSockets running on http://localhost:${PORT}`);
 });
 
 export default app;

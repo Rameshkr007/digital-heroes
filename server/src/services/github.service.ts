@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { prisma } from '../utils/prisma';
+import { broadcastLiveEvent } from '../utils/socket';
 
 export interface GitHubStats {
   publicRepos: number;
@@ -85,7 +86,8 @@ export async function syncGitHubForHero(heroId: string, githubUsername: string) 
   const hero = await prisma.heroProfile.findUnique({ where: { id: heroId } });
   if (!hero) throw new Error('Hero profile not found');
 
-  const newXP = Math.max(hero.xp, hero.xp + Math.floor(totalGitHubXPBonus * 0.2));
+  const earnedXP = Math.floor(totalGitHubXPBonus * 0.2);
+  const newXP = hero.xp + earnedXP;
   const newLevel = Math.floor(newXP / 1000) + 1;
 
   const updatedProfile = await prisma.heroProfile.update({
@@ -129,9 +131,18 @@ export async function syncGitHubForHero(heroId: string, githubUsername: string) 
     },
   });
 
+  // Broadcast WebSockets live event to all connected clients!
+  broadcastLiveEvent({
+    type: newLevel > hero.level ? 'level_up' : 'xp_gained',
+    title: newLevel > hero.level ? `🎉 ${hero.displayName} Reached Level ${newLevel}!` : `⚡ ${hero.displayName} Earned +${earnedXP} XP!`,
+    message: `Synced GitHub @${githubUsername} (${stats.publicRepos} repos, ${stats.totalStars} stars)`,
+    heroName: hero.displayName,
+    avatarUrl: hero.avatarUrl,
+  });
+
   return {
     profile: updatedProfile,
     stats,
-    xpEarned: Math.floor(totalGitHubXPBonus * 0.2),
+    xpEarned: earnedXP,
   };
 }
