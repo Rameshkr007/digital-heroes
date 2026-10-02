@@ -27,6 +27,7 @@ const YourMonthStory = React.lazy(() => import('./pages/YourMonthStory'));
 const ImpactLedger = React.lazy(() => import('./pages/ImpactLedger'));
 import { CommandPalette } from './components/CommandPalette';
 import { PersonalCopilot } from './components/PersonalCopilot';
+import { VoiceCopilot } from './components/VoiceCopilot';
 import { MobileNav } from './components/layout/MobileNav';
 
 function PageLoader() {
@@ -92,6 +93,7 @@ export default function App() {
       <ToastContainer />
       <CommandPalette isOpen={cmdOpen} onClose={() => setCmdOpen(false)} />
       <PersonalCopilot />
+      <VoiceCopilot />
     </div>
   );
 }

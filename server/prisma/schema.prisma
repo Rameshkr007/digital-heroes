@@ -468,3 +468,39 @@ model DrawSnapshot {
 
   @@index([drawId])
 }
+
+// 🎙️ Level 4: Digital Heroes Voice Copilot & Usage Tracker
+model VoiceSession {
+  id          String   @id @default(cuid())
+  userId      String
+  transcript  String
+  intent      String   @default("GENERAL_QUERY")
+  response    String
+  toolUsed    String   @default("NONE")
+  durationSec Float    @default(0.0)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
+
+model VoiceUsageLog {
+  id            String   @id @default(cuid())
+  userId        String
+  sttCalls      Int      @default(1)
+  ttsCalls      Int      @default(1)
+  audioSec      Float    @default(0.0)
+  estimatedCost Float    @default(0.002)
+  provider      String   @default("WebSpeechAPI/GroundedVoiceEngine")
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+}
+
+model VoicePrivacySetting {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  voiceEnabled       Boolean  @default(true)
+  voiceHistoryEnabled Boolean @default(true)
+  speechRate         Float    @default(1.0)
+  updatedAt          DateTime @updatedAt
+}

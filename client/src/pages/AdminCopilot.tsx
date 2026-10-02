@@ -9,6 +9,7 @@ import { adminService, AuditLogItem } from '../services/admin';
 
 import { AdminAchievements } from '../components/AdminAchievements';
 import { AdminNeedsAttention } from '../components/AdminNeedsAttention';
+import { AdminVoiceUsage } from '../components/AdminVoiceUsage';
 
 export default function AdminCopilot() {
   const toast = useToast();
@@ -113,6 +114,9 @@ export default function AdminCopilot() {
 
         {/* Module 14: "Needs Attention" Operational Admin Queue */}
         <AdminNeedsAttention />
+
+        {/* Level 4 Voice AI & Infrastructure Dashboard */}
+        <AdminVoiceUsage />
 
         {/* Grid: Fraud Monitor & Feature Flags */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
