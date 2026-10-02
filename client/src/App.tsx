@@ -19,6 +19,10 @@ const Contact = React.lazy(() => import('./pages/Contact'));
 const Login = React.lazy(() => import('./pages/Auth/Login'));
 const Register = React.lazy(() => import('./pages/Auth/Register'));
 const CodeDuel = React.lazy(() => import('./pages/CodeDuel'));
+const GolfCoach = React.lazy(() => import('./pages/GolfCoach'));
+const ImpactMap = React.lazy(() => import('./pages/ImpactMap'));
+const DrawEngine = React.lazy(() => import('./pages/DrawEngine'));
+const AdminCopilot = React.lazy(() => import('./pages/AdminCopilot'));
 
 function PageLoader() {
   return (
@@ -66,6 +70,10 @@ export default function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/codeduel" element={<ProtectedRoute><CodeDuel /></ProtectedRoute>} />
+            <Route path="/golf-coach" element={<ProtectedRoute><GolfCoach /></ProtectedRoute>} />
+            <Route path="/impact-map" element={<ImpactMap />} />
+            <Route path="/draw-engine" element={<DrawEngine />} />
+            <Route path="/admin-copilot" element={<ProtectedRoute><AdminCopilot /></ProtectedRoute>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </React.Suspense>

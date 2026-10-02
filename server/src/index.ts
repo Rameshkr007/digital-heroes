@@ -12,6 +12,11 @@ import achievementRoutes from './routes/achievement.routes';
 import activityRoutes from './routes/activity.routes';
 import githubRoutes from './routes/github.routes';
 import aiRoutes from './routes/ai.routes';
+import golfRoutes from './routes/golf.routes';
+import charityRoutes from './routes/charity.routes';
+import drawRoutes from './routes/draw.routes';
+import adminRoutes from './routes/admin.routes';
+import subscriptionRoutes from './routes/subscription.routes';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
 import { runSeed } from './utils/seed';
@@ -75,6 +80,11 @@ app.use('/api/achievements', achievementRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/github', githubRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/golf', golfRoutes);
+app.use('/api/charity', charityRoutes);
+app.use('/api/draw', drawRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/subscription', subscriptionRoutes);
 
 // 404 handler
 app.use((req, res) => {

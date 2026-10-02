@@ -6,13 +6,11 @@ async function main() {
   try {
     await runSeed(prismaClient);
   } catch (e) {
-    console.error(e);
+    console.error('Seeding error:', e);
     process.exit(1);
   } finally {
     await prismaClient.$disconnect();
   }
 }
 
-if (require.main === module) {
-  main();
-}
+main();

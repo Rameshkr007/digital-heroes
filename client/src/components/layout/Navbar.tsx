@@ -9,11 +9,11 @@ import { Avatar } from '../ui/Avatar';
 
 const navLinks = [
   { href: '/', label: 'Home' },
-  { href: '/explore', label: 'Explore' },
-  { href: '/heroes', label: 'Heroes' },
-  { href: '/achievements', label: 'Achievements' },
+  { href: '/golf-coach', label: 'AI Golf Coach 🧠' },
+  { href: '/impact-map', label: 'Impact Map 🌍' },
+  { href: '/draw-engine', label: 'Draw Engine 🎲' },
   { href: '/codeduel', label: 'Code Duel ⚔️' },
-  { href: '/about', label: 'About' },
+  { href: '/admin-copilot', label: 'Admin Copilot 🤖' },
 ];
 
 export function Navbar() {
