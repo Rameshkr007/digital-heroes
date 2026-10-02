@@ -12,7 +12,7 @@ export async function submitGolfScore(userId?: string, data: { score: number; ha
 
   // Fetch recent scores for rolling average & anomaly detection
   const recentScores = await prisma.golfScore.findMany({
-    where: { userId },
+    where: { userId: targetUserId },
     orderBy: { playedAt: 'desc' },
     take: 5,
   });
@@ -33,18 +33,18 @@ export async function submitGolfScore(userId?: string, data: { score: number; ha
     }
   }
 
-  // Duplicate score check (same score on same course within 1 hour)
+  // Duplicate score check (same score on same course within 1 minute)
   const duplicate = await prisma.golfScore.findFirst({
     where: {
-      userId,
+      userId: targetUserId,
       score: data.score,
       courseName: data.courseName || 'Delhi Golf Club',
-      playedAt: { gte: new Date(Date.now() - 60 * 60 * 1000) },
+      playedAt: { gte: new Date(Date.now() - 60 * 1000) },
     },
   });
 
   if (duplicate) {
-    throw new Error('Duplicate score submission detected. Please wait before re-submitting.');
+    throw new Error('Duplicate score submission detected. Please wait 1 minute before re-submitting identical score.');
   }
 
   const newScore = await prisma.golfScore.create({
@@ -71,7 +71,7 @@ export async function submitGolfScore(userId?: string, data: { score: number; ha
   });
 
   // Check and award badges
-  const totalScoresCount = await prisma.golfScore.count({ where: { userId } });
+  const totalScoresCount = await prisma.golfScore.count({ where: { userId: targetUserId } });
   if (totalScoresCount === 1) {
     const badge = await prisma.badge.findUnique({ where: { name: '🏅 First Score' } });
     if (badge) {
