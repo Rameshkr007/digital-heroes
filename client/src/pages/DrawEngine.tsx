@@ -6,6 +6,7 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { useToast } from '../store/toastStore';
 import { drawService, DrawPoolItem } from '../services/draw';
+import { DrawLab } from '../components/DrawLab';
 
 export default function DrawEngine() {
   const toast = useToast();
@@ -187,6 +188,8 @@ export default function DrawEngine() {
             </Card>
           </div>
         </div>
+        {/* Enterprise Draw Engine 4.0 Simulation Lab */}
+        <DrawLab />
       </div>
     </div>
   );

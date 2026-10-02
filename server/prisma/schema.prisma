@@ -380,3 +380,91 @@ model Notification {
 
   @@index([userId])
 }
+
+// 🤖 Level 4: Self-Improving Recommendation Engine
+model Recommendation {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  description String
+  reason      String
+  dataSource  String
+  confidence  Float    @default(0.95)
+  actionUrl   String   @default("")
+  ctaText     String   @default("View Action")
+  dismissed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
+
+// 📖 Level 4: Personalized Monthly Story
+model MonthlyStory {
+  id          String   @id @default(cuid())
+  userId      String
+  month       String
+  year        Int
+  summaryJson String
+  shareToken  String   @unique
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ⚙️ Level 4: Background Job System
+model BackgroundJob {
+  id          String   @id @default(cuid())
+  jobType     String
+  status      String   @default("PENDING") // PENDING | PROCESSING | COMPLETED | FAILED
+  payload     String
+  attempts    Int      @default(0)
+  maxAttempts Int      @default(3)
+  lastError   String?
+  scheduledAt DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([jobType])
+}
+
+// 🔮 Level 4: Predictive Insights Engine
+model PredictiveInsight {
+  id          String   @id @default(cuid())
+  userId      String
+  metricName  String
+  estimate    String
+  confidence  Float    @default(0.85)
+  basis       String
+  limitations String
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
+
+// 🚨 Level 4: "Needs Attention" Operational Admin Queue
+model AdminQueueItem {
+  id                String   @id @default(cuid())
+  severity          String   @default("MEDIUM") // LOW | MEDIUM | HIGH | CRITICAL
+  module            String
+  reason            String
+  entityId          String?
+  recommendedAction String
+  status            String   @default("PENDING") // PENDING | REVIEWED | RESOLVED
+  createdAt         DateTime @default(now())
+
+  @@index([status])
+  @@index([severity])
+}
+
+// 🎲 Level 4: Draw Snapshot Integrity Model
+model DrawSnapshot {
+  id               String   @id @default(cuid())
+  drawId           String
+  eligibleCount    Int
+  participantsJson String
+  rulesJson        String
+  verificationHash String
+  createdAt        DateTime @default(now())
+
+  @@index([drawId])
+}

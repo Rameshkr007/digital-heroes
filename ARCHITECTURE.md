@@ -1,53 +1,60 @@
-# 🏗️ DIGITAL HEROES — LEVEL 3 ULTIMATE MASTER ARCHITECTURE
+# 🏗️ DIGITAL HEROES — LEVEL 4 ENTERPRISE ARCHITECTURE
 
-## System Overview
+## Target Architecture
 
-Digital Heroes is an AI-native golf performance, subscription, rewards, and charitable-impact ecosystem built around personalization, transparency, trust, and measurable community impact.
-
-```mermaid
-flowchart TD
-    Client["React 18 + TS Frontend (Vite, Tailwind, Framer Motion)"]
-    API["Express + TypeScript Backend API"]
-    Socket["Socket.io Real-Time WebSockets Engine"]
-    Intelligence["Digital Heroes Intelligence Engine"]
-    Events["Smart Event Architecture (Domain Event Emitter)"]
-    DB[("Prisma ORM + PostgreSQL / SQLite Database")]
-
-    Client <-->|REST API + WebSockets| API
-    API <--> Socket
-    API <--> Intelligence
-    API <--> Events
-    API <--> DB
+```
+                    DIGITAL HEROES
+                          │
+        ┌─────────────────┼─────────────────┐
+        │                 │                 │
+     USER APP         ADMIN APP         TRUST CENTER
+        │                 │                 │
+        └─────────────────┼─────────────────┘
+                          │
+                    API / BFF LAYER
+                          │
+        ┌─────────────────┼─────────────────┐
+        │                 │                 │
+ BUSINESS ENGINE     AI ENGINE         EVENT ENGINE
+        │                 │                 │
+        ├──────────────┬──┴──┬──────────────┤
+        │              │     │              │
+   Draw Engine    AI Copilot Analytics   Recommendations
+        │              │     │              │
+        └──────────────┼─────┼──────────────┘
+                       │
+                  DATA PLATFORM
+                       │
+       ┌───────────────┼────────────────┐
+       │               │                │
+   PostgreSQL       Event Store      Audit Store
+       │               │                │
+       └───────────────┼────────────────┘
+                       │
+                 INFRASTRUCTURE
+                       │
+       ┌───────────────┼────────────────┐
+       │               │                │
+   Monitoring       Queues          Notifications
+       │               │                │
+       └───────────────┼────────────────┘
 ```
 
 ---
 
-## Modular Component Map
+## Core Level 4 Subsystems
 
-1. **User Platform**:
-   - Adaptive Dashboard (`Dashboard.tsx`)
-   - Personal Journey Engine (`JourneyTimeline.tsx`)
-   - AI Golf Performance Coach (`GolfCoach.tsx`)
-   - Live Charity Impact Map & Explorer (`ImpactMap.tsx`, `CharityExplorer.tsx`)
-   - Verified Impact Ledger (`ImpactLedger.tsx`)
-   - Dynamic Draw Engine & Simulator (`DrawEngine.tsx`)
+1. **Autonomous Intelligence Layer**:
+   - Event Stream ➔ Feature Processing ➔ Rules Engine ➔ AI Intelligence ➔ Action Layer
+   - Self-Improving Recommendation Engine (`recommendation.service.ts`)
+   - Predictive Insights & Potential Forecasts (`predictive.service.ts`)
 
-2. **Intelligence Layer**:
-   - Personal AI Copilot ("MY DIGITAL HEROES AI" - `PersonalCopilot.tsx`)
-   - AI Golf Performance Coach (`golf.service.ts`)
-   - AI Admin Copilot (`admin.service.ts`)
-   - AI Privacy Memory Store (`preference.service.ts`)
+2. **Enterprise Draw Engine 4.0 & Integrity System**:
+   - Draw Simulation Lab (`DrawLab.tsx`, `simulateDrawLab`)
+   - SHA-256 Immutable Draw Snapshots (`DrawSnapshot`)
+   - Neutral Anomaly Review Queue (`Normal` ➔ `Review` ➔ `Investigation` ➔ `Resolved`)
 
-3. **Core Business Engines**:
-   - Score Intelligence & Anomaly Detection
-   - Subscription Intelligence
-   - Transparent Draw Pool & Winner Verification
-   - Configurable Achievement Gamification (`gamification.service.ts`)
-   - Smart Event Engine (`events.service.ts`)
-   - Command Palette (`CommandPalette.tsx`)
-
-4. **Security & Resilience Layer**:
-   - Server-Side Role-Based Access Control (RBAC)
-   - Idempotency Header Validation (`x-idempotency-key`)
-   - Anomaly & Outlier Risk Monitor
-   - Platform Trust & Verification Center
+3. **Enterprise Operations & Governance**:
+   - "Needs Attention" Intelligent Admin Queue (`AdminNeedsAttention.tsx`)
+   - Background Job Queue System (`jobs.service.ts`)
+   - System Health Center (`/api/level4/system/health`)

@@ -18,6 +18,7 @@ import drawRoutes from './routes/draw.routes';
 import adminRoutes from './routes/admin.routes';
 import subscriptionRoutes from './routes/subscription.routes';
 import level3Routes from './routes/level3.routes';
+import level4Routes from './routes/level4.routes';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
 import { runSeed } from './utils/seed';
@@ -87,6 +88,7 @@ app.use('/api/draw', drawRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/subscription', subscriptionRoutes);
 app.use('/api/level3', level3Routes);
+app.use('/api/level4', level4Routes);
 
 // 404 handler
 app.use((req, res) => {

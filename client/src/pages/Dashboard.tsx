@@ -21,6 +21,9 @@ import { JourneyTimeline } from '../components/JourneyTimeline';
 import { UserPreferencesModal } from '../components/UserPreferencesModal';
 import { Settings } from 'lucide-react';
 
+import { RecommendationEngine } from '../components/RecommendationEngine';
+import { PredictiveInsights } from '../components/PredictiveInsights';
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const toast = useToast();
@@ -113,6 +116,12 @@ export default function Dashboard() {
             </div>
           </div>
         </motion.div>
+
+        {/* Self-Improving Recommendation Engine */}
+        <RecommendationEngine />
+
+        {/* Predictive Insights Engine */}
+        <PredictiveInsights />
 
         {/* Personal Journey Engine Timeline & Smart Actions */}
         <JourneyTimeline journeyData={journeyData} onActionClick={(url) => navigate(url)} />

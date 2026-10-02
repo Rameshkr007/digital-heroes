@@ -8,6 +8,7 @@ import { useToast } from '../store/toastStore';
 import { adminService, AuditLogItem } from '../services/admin';
 
 import { AdminAchievements } from '../components/AdminAchievements';
+import { AdminNeedsAttention } from '../components/AdminNeedsAttention';
 
 export default function AdminCopilot() {
   const toast = useToast();
@@ -109,6 +110,9 @@ export default function AdminCopilot() {
             </div>
           )}
         </Card>
+
+        {/* Module 14: "Needs Attention" Operational Admin Queue */}
+        <AdminNeedsAttention />
 
         {/* Grid: Fraud Monitor & Feature Flags */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
