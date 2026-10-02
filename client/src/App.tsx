@@ -23,6 +23,10 @@ const GolfCoach = React.lazy(() => import('./pages/GolfCoach'));
 const ImpactMap = React.lazy(() => import('./pages/ImpactMap'));
 const DrawEngine = React.lazy(() => import('./pages/DrawEngine'));
 const AdminCopilot = React.lazy(() => import('./pages/AdminCopilot'));
+const TrustCenter = React.lazy(() => import('./pages/TrustCenter'));
+const CharityExplorer = React.lazy(() => import('./pages/CharityExplorer'));
+const YourMonthStory = React.lazy(() => import('./pages/YourMonthStory'));
+import { MobileNav } from './components/layout/MobileNav';
 
 function PageLoader() {
   return (
@@ -53,7 +57,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-navy-950 transition-colors duration-300">
+    <div className="min-h-screen bg-slate-50 dark:bg-navy-950 transition-colors duration-300 pb-16 lg:pb-0">
       <LiveActivityBanner />
       <Navbar />
       <main>
@@ -72,13 +76,17 @@ export default function App() {
             <Route path="/codeduel" element={<ProtectedRoute><CodeDuel /></ProtectedRoute>} />
             <Route path="/golf-coach" element={<ProtectedRoute><GolfCoach /></ProtectedRoute>} />
             <Route path="/impact-map" element={<ImpactMap />} />
+            <Route path="/charities" element={<CharityExplorer />} />
             <Route path="/draw-engine" element={<DrawEngine />} />
             <Route path="/admin-copilot" element={<ProtectedRoute><AdminCopilot /></ProtectedRoute>} />
+            <Route path="/trust" element={<TrustCenter />} />
+            <Route path="/month-story" element={<ProtectedRoute><YourMonthStory /></ProtectedRoute>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </React.Suspense>
       </main>
       <Footer />
+      <MobileNav />
       <ToastContainer />
       <CommandPalette isOpen={cmdOpen} onClose={() => setCmdOpen(false)} />
       <AIMentorDrawer />
