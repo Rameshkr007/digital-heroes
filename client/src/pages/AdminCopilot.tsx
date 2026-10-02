@@ -7,6 +7,8 @@ import { Badge } from '../components/ui/Badge';
 import { useToast } from '../store/toastStore';
 import { adminService, AuditLogItem } from '../services/admin';
 
+import { AdminAchievements } from '../components/AdminAchievements';
+
 export default function AdminCopilot() {
   const toast = useToast();
   const [loading, setLoading] = useState(true);
@@ -168,6 +170,9 @@ export default function AdminCopilot() {
             </Card>
           </div>
         </div>
+
+        {/* Configurable Gamification Manager */}
+        <AdminAchievements />
 
         {/* Module 12: Complete Audit Log Explorer */}
         <Card padding="lg">

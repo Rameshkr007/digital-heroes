@@ -11,8 +11,9 @@ const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/golf-coach', label: 'AI Golf Coach 🧠' },
   { href: '/impact-map', label: 'Impact Map 🌍' },
+  { href: '/impact-ledger', label: 'Impact Ledger 📜' },
   { href: '/draw-engine', label: 'Draw Engine 🎲' },
-  { href: '/codeduel', label: 'Code Duel ⚔️' },
+  { href: '/trust', label: 'Trust Center 🛡️' },
   { href: '/admin-copilot', label: 'Admin Copilot 🤖' },
 ];
 

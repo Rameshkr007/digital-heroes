@@ -3,8 +3,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 import { ToastContainer } from './components/ui/Toast';
-import { CommandPalette } from './components/shared/CommandPalette';
-import { AIMentorDrawer } from './components/shared/AIMentorDrawer';
 import { LiveActivityBanner } from './components/shared/LiveActivityBanner';
 import { useAuthStore } from './store/authStore';
 
@@ -26,6 +24,9 @@ const AdminCopilot = React.lazy(() => import('./pages/AdminCopilot'));
 const TrustCenter = React.lazy(() => import('./pages/TrustCenter'));
 const CharityExplorer = React.lazy(() => import('./pages/CharityExplorer'));
 const YourMonthStory = React.lazy(() => import('./pages/YourMonthStory'));
+const ImpactLedger = React.lazy(() => import('./pages/ImpactLedger'));
+import { CommandPalette } from './components/CommandPalette';
+import { PersonalCopilot } from './components/PersonalCopilot';
 import { MobileNav } from './components/layout/MobileNav';
 
 function PageLoader() {
@@ -76,6 +77,7 @@ export default function App() {
             <Route path="/codeduel" element={<ProtectedRoute><CodeDuel /></ProtectedRoute>} />
             <Route path="/golf-coach" element={<ProtectedRoute><GolfCoach /></ProtectedRoute>} />
             <Route path="/impact-map" element={<ImpactMap />} />
+            <Route path="/impact-ledger" element={<ImpactLedger />} />
             <Route path="/charities" element={<CharityExplorer />} />
             <Route path="/draw-engine" element={<DrawEngine />} />
             <Route path="/admin-copilot" element={<ProtectedRoute><AdminCopilot /></ProtectedRoute>} />
@@ -89,7 +91,7 @@ export default function App() {
       <MobileNav />
       <ToastContainer />
       <CommandPalette isOpen={cmdOpen} onClose={() => setCmdOpen(false)} />
-      <AIMentorDrawer />
+      <PersonalCopilot />
     </div>
   );
 }

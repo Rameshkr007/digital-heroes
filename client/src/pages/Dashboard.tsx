@@ -16,17 +16,25 @@ import { authService } from '../services/auth';
 import { githubService } from '../services/github';
 import { useToast } from '../store/toastStore';
 
+import { level3Service, UserJourneyData } from '../services/level3';
+import { JourneyTimeline } from '../components/JourneyTimeline';
+import { UserPreferencesModal } from '../components/UserPreferencesModal';
+import { Settings } from 'lucide-react';
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const toast = useToast();
   const { user, updateUser } = useAuthStore();
   const [loading, setLoading] = useState(true);
   const [githubModal, setGithubModal] = useState(false);
+  const [prefsModal, setPrefsModal] = useState(false);
   const [ghUsername, setGhUsername] = useState('');
   const [syncing, setSyncing] = useState(false);
+  const [journeyData, setJourneyData] = useState<UserJourneyData | null>(null);
 
   useEffect(() => {
     authService.getMe().then((data) => { updateUser(data); }).catch(() => {}).finally(() => setLoading(false));
+    level3Service.getJourney().then(setJourneyData).catch(() => {});
   }, [updateUser]);
 
   const profile = user?.profile;
@@ -76,9 +84,9 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen pt-24 pb-16 bg-slate-50 dark:bg-navy-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}>
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-4">
               <Avatar src={profile.avatarUrl} alt={profile.displayName} size="xl" level={profile.level} />
@@ -93,6 +101,9 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <Button onClick={() => setPrefsModal(true)} variant="ghost" leftIcon={<Settings size={16} />}>
+                AI & Privacy Settings
+              </Button>
               <Button onClick={() => setGithubModal(true)} variant="secondary" leftIcon={<Github size={16} />}>
                 Sync GitHub
               </Button>
@@ -102,6 +113,9 @@ export default function Dashboard() {
             </div>
           </div>
         </motion.div>
+
+        {/* Personal Journey Engine Timeline & Smart Actions */}
+        <JourneyTimeline journeyData={journeyData} onActionClick={(url) => navigate(url)} />
 
         {/* Stats cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -225,6 +239,8 @@ export default function Dashboard() {
           </div>
         </form>
       </Modal>
+      {/* User Preferences & AI Memory Modal */}
+      <UserPreferencesModal isOpen={prefsModal} onClose={() => setPrefsModal(false)} />
     </div>
   );
 }
