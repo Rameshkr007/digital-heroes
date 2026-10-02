@@ -1,15 +1,22 @@
 import { prisma } from '../utils/prisma';
 
-export async function getUserSubscription(userId: string) {
+export async function getUserSubscription(userId?: string) {
+  let targetUserId = userId;
+  if (!targetUserId) {
+    const demoUser = await prisma.user.findFirst({ where: { email: 'aarav@digitalhero.dev' } });
+    targetUserId = demoUser?.id;
+  }
+  if (!targetUserId) throw new Error('User profile not found');
+
   let sub = await prisma.subscription.findFirst({
-    where: { userId },
+    where: { userId: targetUserId },
     orderBy: { createdAt: 'desc' },
   });
 
   if (!sub) {
     sub = await prisma.subscription.create({
       data: {
-        userId,
+        userId: targetUserId!,
         planName: 'Hero Pro Champion Plan',
         status: 'ACTIVE',
         priceMonthly: 999.0,

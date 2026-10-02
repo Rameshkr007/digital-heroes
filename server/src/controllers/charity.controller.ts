@@ -13,7 +13,7 @@ export async function getMap(req: Request, res: Response, next: NextFunction): P
 
 export async function getMyImpact(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
   try {
-    const data = await getUserImpact(req.user!.userId);
+    const data = await getUserImpact(req.user?.userId);
     res.json({ success: true, data });
   } catch (err) {
     next(err);

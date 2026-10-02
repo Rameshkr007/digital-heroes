@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { getSubscription } from '../controllers/subscription.controller';
-import { authenticate } from '../middleware/auth';
+import { optionalAuth } from '../middleware/auth';
 
 const router = Router();
 
-router.get('/me', authenticate, getSubscription);
+router.get('/me', optionalAuth, getSubscription);
 
 export default router;

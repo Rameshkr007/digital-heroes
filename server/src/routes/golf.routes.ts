@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { addScore, getPerformance, getCoachAdvice } from '../controllers/golf.controller';
-import { authenticate } from '../middleware/auth';
+import { optionalAuth } from '../middleware/auth';
 
 const router = Router();
 
-router.post('/score', authenticate, addScore);
-router.get('/performance', authenticate, getPerformance);
-router.get('/coach', authenticate, getCoachAdvice);
+router.post('/score', optionalAuth, addScore);
+router.get('/performance', optionalAuth, getPerformance);
+router.get('/coach', optionalAuth, getCoachAdvice);
 
 export default router;

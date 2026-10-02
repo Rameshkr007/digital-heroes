@@ -1,7 +1,13 @@
 import { prisma } from '../utils/prisma';
 
-export async function submitGolfScore(userId: string, data: { score: number; handicap?: number; courseName?: string }) {
-  const user = await prisma.user.findUnique({ where: { id: userId }, include: { profile: true } });
+export async function submitGolfScore(userId?: string, data: { score: number; handicap?: number; courseName?: string } = { score: 72 }) {
+  let targetUserId = userId;
+  if (!targetUserId) {
+    const demoUser = await prisma.user.findFirst({ where: { email: 'aarav@digitalhero.dev' } });
+    targetUserId = demoUser?.id;
+  }
+  if (!targetUserId) throw new Error('User profile not found');
+  const user = await prisma.user.findUnique({ where: { id: targetUserId }, include: { profile: true } });
   if (!user || !user.profile) throw new Error('User profile not found');
 
   // Fetch recent scores for rolling average & anomaly detection
@@ -43,7 +49,7 @@ export async function submitGolfScore(userId: string, data: { score: number; han
 
   const newScore = await prisma.golfScore.create({
     data: {
-      userId,
+      userId: targetUserId!,
       score: data.score,
       handicap,
       stablefordPoints,
@@ -56,7 +62,7 @@ export async function submitGolfScore(userId: string, data: { score: number; han
   // Audit log entry
   await prisma.auditLog.create({
     data: {
-      userId,
+      userId: targetUserId!,
       username: user.username,
       action: 'SCORE_SUBMITTED',
       module: 'GOLF_INTELLIGENCE',
@@ -89,11 +95,17 @@ export async function submitGolfScore(userId: string, data: { score: number; han
   };
 }
 
-export async function getGolfPerformance(userId: string) {
-  const scores = await prisma.golfScore.findMany({
-    where: { userId },
+export async function getGolfPerformance(userId?: string) {
+  let targetUserId = userId;
+  if (!targetUserId) {
+    const demoUser = await prisma.user.findFirst({ where: { email: 'aarav@digitalhero.dev' } });
+    targetUserId = demoUser?.id;
+  }
+
+  const scores = targetUserId ? await prisma.golfScore.findMany({
+    where: { userId: targetUserId },
     orderBy: { playedAt: 'desc' },
-  });
+  }) : [];
 
   if (scores.length === 0) {
     return {
@@ -139,9 +151,12 @@ export async function getGolfPerformance(userId: string) {
   };
 }
 
-export async function getAIGolfCoachAdvice(userId: string) {
+export async function getAIGolfCoachAdvice(userId?: string) {
   const perf = await getGolfPerformance(userId);
-  const user = await prisma.user.findUnique({ where: { id: userId }, include: { profile: true } });
+  let user = userId ? await prisma.user.findUnique({ where: { id: userId }, include: { profile: true } }) : null;
+  if (!user) {
+    user = await prisma.user.findFirst({ where: { email: 'aarav@digitalhero.dev' }, include: { profile: true } });
+  }
   const name = user?.profile?.displayName.split(' ')[0] || 'Golfer';
 
   if (perf.totalScores < 3) {

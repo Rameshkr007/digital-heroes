@@ -9,7 +9,7 @@ export async function addScore(req: AuthRequest, res: Response, next: NextFuncti
       res.status(400).json({ success: false, message: 'Valid golf score between 50 and 150 is required' });
       return;
     }
-    const result = await submitGolfScore(req.user!.userId, { score, handicap, courseName });
+    const result = await submitGolfScore(req.user?.userId, { score, handicap, courseName });
     res.json({ success: true, data: result });
   } catch (err) {
     next(err);
@@ -18,7 +18,7 @@ export async function addScore(req: AuthRequest, res: Response, next: NextFuncti
 
 export async function getPerformance(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
   try {
-    const perf = await getGolfPerformance(req.user!.userId);
+    const perf = await getGolfPerformance(req.user?.userId);
     res.json({ success: true, data: perf });
   } catch (err) {
     next(err);
@@ -27,7 +27,7 @@ export async function getPerformance(req: AuthRequest, res: Response, next: Next
 
 export async function getCoachAdvice(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
   try {
-    const advice = await getAIGolfCoachAdvice(req.user!.userId);
+    const advice = await getAIGolfCoachAdvice(req.user?.userId);
     res.json({ success: true, data: advice });
   } catch (err) {
     next(err);

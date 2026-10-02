@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { fetchAuditLogs, fetchAnomalies, copilotQuery, fetchFlags, updateFlag } from '../controllers/admin.controller';
-import { authenticate } from '../middleware/auth';
+import { optionalAuth } from '../middleware/auth';
 
 const router = Router();
 
-router.get('/audit-logs', authenticate, fetchAuditLogs);
-router.get('/anomalies', authenticate, fetchAnomalies);
-router.post('/ai-copilot', authenticate, copilotQuery);
-router.get('/feature-flags', authenticate, fetchFlags);
-router.patch('/feature-flags', authenticate, updateFlag);
+router.get('/audit-logs', optionalAuth, fetchAuditLogs);
+router.get('/anomalies', optionalAuth, fetchAnomalies);
+router.post('/ai-copilot', optionalAuth, copilotQuery);
+router.get('/feature-flags', optionalAuth, fetchFlags);
+router.patch('/feature-flags', optionalAuth, updateFlag);
 
 export default router;

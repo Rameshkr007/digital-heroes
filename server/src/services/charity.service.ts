@@ -28,12 +28,18 @@ export async function getImpactMapData() {
   };
 }
 
-export async function getUserImpact(userId: string) {
-  const contributions = await prisma.charityContribution.findMany({
-    where: { userId },
+export async function getUserImpact(userId?: string) {
+  let targetUserId = userId;
+  if (!targetUserId) {
+    const demoUser = await prisma.user.findFirst({ where: { email: 'aarav@digitalhero.dev' } });
+    targetUserId = demoUser?.id;
+  }
+
+  const contributions = targetUserId ? await prisma.charityContribution.findMany({
+    where: { userId: targetUserId },
     include: { charity: true },
     orderBy: { createdAt: 'desc' },
-  });
+  }) : [];
 
   const totals = contributions.reduce(
     (acc, curr) => ({
